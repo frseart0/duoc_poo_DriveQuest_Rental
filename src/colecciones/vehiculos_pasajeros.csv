@@ -1,0 +1,4 @@
+patente,marca,modelo,disponible,dias arriendo,valor arriendo dia,valor total arriendo,pasajeros maximo
+LBGH54,Ford,F150,true,0,28000,0,5
+TRHE21,Nissan,Versa,true,0,23000,0,5
+LFDF16,Nissan,Altima,true,0,35000,0,6

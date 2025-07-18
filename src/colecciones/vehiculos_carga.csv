@@ -1,3 +1,4 @@
-RV8090,Ford,E450,true,0,30000,800,0
-TXCV32,Nissan,Urban,true,0,38000,570,0
-SCER20,Maxus,EV30,true,0,35000,700,0
+patente,marca,modelo,disponible,dias arriendo,valor arriendo dia,valor total arriendo,carga maxima
+TXCV32,Nissan,Urban,true,0,38000,0,570
+SCER20,Maxus,EV30,true,0,35000,0,700
+RV8090,Ford,E450,true,0,30000,0,800
