@@ -6,7 +6,7 @@ import modelo.vehiculo.VehiculoPasajeros;
 import java.io.*;
 import java.util.ArrayList;
 
-public class GestionVehiculos {
+public class GestionVehiculos extends Thread {
     private final ArrayList<VehiculoCarga> vehiculosCarga;
     private final ArrayList<VehiculoPasajeros> vehiculosPasajeros;
 
@@ -157,48 +157,52 @@ public class GestionVehiculos {
         System.out.println("Vehiculo con patente " + patente + " no encontrado.");
     }
 
-    public void guardarDatos() {
-        guardarVehiculosCarga();
-        guardarVehiculosPasajeros();
+    public void guardarDatos(String rutaArchivo) {
+        guardarVehiculosCarga(rutaArchivo);
+        guardarVehiculosPasajeros(rutaArchivo);
     }
 
-    private void guardarVehiculosCarga() {
-        try (FileWriter writer = new FileWriter("src/colecciones/vehiculos_carga.csv")) {
-            writer.write("patente,marca,modelo,disponible,dias arriendo,valor arriendo dia,valor total arriendo,carga maxima\n");
-            for (VehiculoCarga vehiculo : vehiculosCarga) {
-                writer.write(String.format("%s,%s,%s,%b,%d,%d,%d,%d\n",
-                        vehiculo.getPatente(),
-                        vehiculo.getMarca(),
-                        vehiculo.getModelo(),
-                        vehiculo.isDisponible(),
-                        vehiculo.getDiasArriendo(),
-                        vehiculo.getValorArriendoDia(),
-                        vehiculo.getValorArriendoTotal(),
-                        vehiculo.getCargaMaximaKg()
-                ));
+    private void guardarVehiculosCarga(String rutaArchivo) {
+        synchronized (vehiculosCarga) {
+            try (FileWriter writer = new FileWriter(rutaArchivo)) {
+                writer.write("patente,marca,modelo,disponible,dias arriendo,valor arriendo dia,valor total arriendo,carga maxima\n");
+                for (VehiculoCarga vehiculo : vehiculosCarga) {
+                    writer.write(String.format("%s,%s,%s,%b,%d,%d,%d,%d\n",
+                            vehiculo.getPatente(),
+                            vehiculo.getMarca(),
+                            vehiculo.getModelo(),
+                            vehiculo.isDisponible(),
+                            vehiculo.getDiasArriendo(),
+                            vehiculo.getValorArriendoDia(),
+                            vehiculo.getValorArriendoTotal(),
+                            vehiculo.getCargaMaximaKg()
+                    ));
+                }
+            } catch (IOException e) {
+                System.err.println("Error al guardar vehiculos de carga: " + e.getMessage());
             }
-        } catch (IOException e) {
-            System.err.println("Error al guardar vehiculos de carga: " + e.getMessage());
         }
     }
 
-    private void guardarVehiculosPasajeros() {
-        try (FileWriter writer = new FileWriter("src/colecciones/vehiculos_pasajeros.csv")) {
-            writer.write("patente,marca,modelo,disponible,dias arriendo,valor arriendo dia,valor total arriendo,pasajeros maximo\n");
-            for (VehiculoPasajeros vehiculo : vehiculosPasajeros) {
-                writer.write(String.format("%s,%s,%s,%b,%d,%d,%d,%d\n",
-                        vehiculo.getPatente(),
-                        vehiculo.getMarca(),
-                        vehiculo.getModelo(),
-                        vehiculo.isDisponible(),
-                        vehiculo.getDiasArriendo(),
-                        vehiculo.getValorArriendoDia(),
-                        vehiculo.getValorArriendoTotal(),
-                        vehiculo.getPasajerosMaximo()
-                ));
+    private void guardarVehiculosPasajeros(String rutaArchivo) {
+        synchronized (vehiculosPasajeros) {
+            try (FileWriter writer = new FileWriter(rutaArchivo)) {
+                writer.write("patente,marca,modelo,disponible,dias arriendo,valor arriendo dia,valor total arriendo,pasajeros maximo\n");
+                for (VehiculoPasajeros vehiculo : vehiculosPasajeros) {
+                    writer.write(String.format("%s,%s,%s,%b,%d,%d,%d,%d\n",
+                            vehiculo.getPatente(),
+                            vehiculo.getMarca(),
+                            vehiculo.getModelo(),
+                            vehiculo.isDisponible(),
+                            vehiculo.getDiasArriendo(),
+                            vehiculo.getValorArriendoDia(),
+                            vehiculo.getValorArriendoTotal(),
+                            vehiculo.getPasajerosMaximo()
+                    ));
+                }
+            } catch (IOException e) {
+                System.err.println("Error al guardar vehiculos de pasajeros: " + e.getMessage());
             }
-        } catch (IOException e) {
-            System.err.println("Error al guardar vehiculos de pasajeros: " + e.getMessage());
         }
     }
 }
